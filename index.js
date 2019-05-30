@@ -11,7 +11,7 @@ const {
 } = require("./config.js");
 
 const obs = new OBSWebSocket();
-obs.connect({ address: 'localhost:4444', });
+obs.connect({ address: 'localhost:4444', }).catch((err) => console.error(err));
 
 const {api, chat, chatConstants} = new TwitchJS({
     token: twitchOAuth,
@@ -21,7 +21,7 @@ const {api, chat, chatConstants} = new TwitchJS({
 
 
 chat.connect().then(() => {
-    chat.join(twitchChannel).catch((err) => {throw err});
+    chat.join(twitchChannel).catch((err) => console.error(err));
     chat.on("PRIVMSG", (msg) => handleMsg(msg));
 
     timers.forEach((timer) => {
@@ -37,13 +37,13 @@ function handleMsg(msg) {
 
     // CAMERA SWITCHING
     if (msg.message.startsWith("!maincam")) {
-        obs.send("SetCurrentScene", {"scene-name": "maincam"});
         console.info("Switching to maincam");
+        obs.send("SetCurrentScene", {"scene-name": "maincam"}).catch((err) => console.error(err));
         return;
     }
     if (msg.message.startsWith("!rearcam")) {
-        obs.send("SetCurrentScene", {"scene-name": "rearcam"});
         console.info("Switching to rearcam");
+        obs.send("SetCurrentScene", {"scene-name": "rearcam"}).catch((err) => console.error(err));
         return;
     }
 
@@ -53,14 +53,14 @@ function handleMsg(msg) {
         Object.keys(messages).forEach((command) => {
             commands += command += " ";
         })
-        chat.say(twitchChannel, commands);
+        chat.say(twitchChannel, commands).catch((err) => console.error(err));
         return;
     }
 
     // TEXT MESSAGES
     for (const [command, message] of Object.entries(messages)) {
         if(msg.message.startsWith(command)) {
-            chat.say(twitchChannel, message);
+            chat.say(twitchChannel, message).catch((err) => console.error(err));
             return;
         }
     }
