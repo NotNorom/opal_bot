@@ -1,0 +1,16 @@
+{
+  "name": "opal",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "obs-websocket-js": "^3.0.0",
+    "twitch-js": "^2.0.0-beta.30"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "twitter.com/_norom_",
+  "license": "I don't fucking care"
+}
