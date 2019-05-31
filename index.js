@@ -33,22 +33,26 @@ chat.connect().then(() => {
 
 // CHAT TRIGGERED
 function handleMsg(msg) {
+    // regexp = /^(?<command>!opal)( (?<user>@\S+))?$/
+    // "!opal @somebody".match(regexp).groups.command #=> "!opal"
+    // "!opal @somebody".match(regexp).groups.user #=> "@somebody"
+    // in case you want to reply to mentioned user, for example
     if (msg.isSelf) {return} // ignore messages the bot is sending
 
     // CAMERA SWITCHING
-    if (msg.message.startsWith("!maincam")) {
+    if (msg.message.match(/^(?<command>!maincam)$/)) {
         console.info("Switching to maincam");
         obs.send("SetCurrentScene", {"scene-name": "maincam"}).catch((err) => console.error(err));
         return;
     }
-    if (msg.message.startsWith("!rearcam")) {
+    if (msg.message.match(/^(?<command>!rearcam)$/)) {
         console.info("Switching to rearcam");
         obs.send("SetCurrentScene", {"scene-name": "rearcam"}).catch((err) => console.error(err));
         return;
     }
 
     // HELP MESSAGE
-    if (msg.message.startsWith("!opal")) {
+    if (msg.message.match(/^(?<command>!opal)( (?<user>@\S+))?$/)) {
         var commands = "Available commands: ";
         Object.keys(messages).forEach((command) => {
             commands += command += " ";
